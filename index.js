@@ -1,5 +1,6 @@
 const express = require('express');
 const carousel = require('./routes/carousel');
+const library = require('./routes/library');
 const app = express();
 const cors = require("cors");
 
@@ -11,6 +12,7 @@ app.use(cors());
 try{
   app.use(express.json());
   app.use('/api/carousel', carousel);
+  app.use('/api/library', library);
 }
 catch(ex){
   console.log(ex.message);
