@@ -3,11 +3,21 @@ const carousel = require('./routes/carousel');
 const library = require('./routes/library');
 const app = express();
 const cors = require("cors");
+const helmet = require("helmet");
+
 
 process.env.DOTENV_CONFIG_DEBUG = "false";
 require("dotenv").config();
 
-app.use(cors());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      connectSrc: ["'self'", process.env.FRONTEND_URL]
+    }
+  }
+}));
 
 try{
   app.use(express.json());
@@ -21,9 +31,6 @@ catch(ex){
 app.get('/', (req, res) => {
     res.send('Hello, Node.js!');
 });
-
-
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
