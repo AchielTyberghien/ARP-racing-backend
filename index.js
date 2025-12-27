@@ -2,7 +2,6 @@ const express = require('express');
 const carousel = require('./routes/carousel');
 const library = require('./routes/library');
 const app = express();
-const cors = require("cors");
 const helmet = require("helmet");
 
 
