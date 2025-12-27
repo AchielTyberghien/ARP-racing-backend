@@ -69,11 +69,11 @@ router.get("/:id", async (req, res) => {
       }
     });
 
-    const fileNames = response.data.map(file => file.name);
+    const pictureList = response.data.map(file => ({ name: file.name, description: file.description }));
 
     res.json({
       success: true,
-      data: fileNames,
+      pictures: pictureList,
     });
 
   } catch (error) {

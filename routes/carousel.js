@@ -19,11 +19,11 @@ router.get("/", async (req, res) => {
       }
     });
 
-    const fileNames = response.data.map(file => ({ name: file.name, description: file.description }));
+    const pictureList = response.data.map(file => ({ name: file.name, description: file.description }));
 
     res.json({
       success: true,
-      pictures: fileNames,
+      pictures: pictureList,
     });
 
   } catch (error) {
