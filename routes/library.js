@@ -34,8 +34,6 @@ router.get("/", async (req, res) => {
         }
     });
 
-    console.log(mapsWithFirstImage);
-
 
     res.json({
       success: true,
