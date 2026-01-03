@@ -3,6 +3,7 @@ const carousel = require('./routes/carousel');
 const library = require('./routes/library');
 const app = express();
 const helmet = require("helmet");
+const cors = require("cors");
 
 
 process.env.DOTENV_CONFIG_DEBUG = "false";
@@ -16,6 +17,12 @@ app.use(helmet({
       connectSrc: ["'self'", process.env.FRONTEND_URL]
     }
   }
+}));
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:4200',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
 }));
 
 try{
