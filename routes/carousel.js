@@ -21,6 +21,7 @@ router.get("/", async (req, res) => {
 
     const pictureList = response.data.map(file => ({ name: file.name, description: file.description }));
 
+    
     res.json({
       success: true,
       pictures: pictureList,
