@@ -5,7 +5,6 @@ const app = express();
 const helmet = require("helmet");
 const cors = require("cors");
 
-
 process.env.DOTENV_CONFIG_DEBUG = "false";
 require("dotenv").config();
 
