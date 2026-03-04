@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik:v3.6.2
+    container_name: traefik
+    command:
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--entrypoints.web.address=:80'
+      - '--api.dashboard=true'
+    ports:
+      - '80:80'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.traefik.rule=Host(`traefik.localhost`)'
+      - 'traefik.http.routers.traefik.entrypoints=web'
+      - 'traefik.http.routers.traefik.service=api@internal'
+    networks:
+      - proxy
+
+  arp-backend:
+    build: .
+    container_name: arp-backend
+    env_file:
+      - .env
+    expose:
+      - '3000'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.arp-backend.rule=Host(`arp.localhost`)'
+      - 'traefik.http.routers.arp-backend.entrypoints=web'
+      - 'traefik.http.services.arp-backend.loadbalancer.server.port=3000'
+    networks:
+      - proxy
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    environment:
+      - N8N_HOST=n8n.localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://n8n.local.test
+      - N8N_SECURE_COOKIE=false
+      - GENERIC_TIMEZONE=Europe/Brussels
+
+    expose:
+      - '5678'
+    volumes:
+      - n8n_data:/home/node/.n8n
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.n8n.rule=Host(`n8n.local.test`)'
+      - 'traefik.http.routers.n8n.entrypoints=web'
+      - 'traefik.http.services.n8n.loadbalancer.server.port=5678'
+    networks:
+      - proxy
+
+volumes:
+  n8n_data:
+
+networks:
+  proxy:
+    driver: bridge
