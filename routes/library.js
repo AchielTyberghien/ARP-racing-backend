@@ -21,7 +21,12 @@ router.get("/", async (req, res) => {
 
     const mapsWithFirstImage = {};
 
-    response.data.forEach(file => {
+    response.data.filter(f => f?.customMetadata?.DateCreated)   
+      .sort((b, a) =>
+        a.customMetadata.DateCreated.localeCompare(
+          b.customMetadata.DateCreated
+        )
+      ).forEach(file => {
         const path = file.filePath;
 
         if (!path.startsWith("/Arp Racing/library/")) return;
