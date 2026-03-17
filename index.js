@@ -9,6 +9,8 @@ const rateLimit = require("express-rate-limit");
 process.env.DOTENV_CONFIG_DEBUG = "false";
 require("dotenv").config();
 
+app.set('trust proxy', 2);
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
