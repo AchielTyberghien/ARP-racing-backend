@@ -48,6 +48,24 @@ try{
   app.use('/api', apiLimiter);
   app.use('/api/carousel', carousel);
   app.use('/api/library', library);
+  app.post('/api/contact', async (req, res) => {
+  try {
+    if (!req.body.name || !req.body.email || !req.body.message) {
+      return res.status(400).json({ success: false, message: 'Input fields are required' });
+    }
+    const response = await fetch(process.env.CONTACT_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to send contact message');
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false });
+  }
+});
 }
 catch(ex){
   console.log(ex.message);
