@@ -48,6 +48,19 @@ try{
   app.use('/api', apiLimiter);
   app.use('/api/carousel', carousel);
   app.use('/api/library', library);
+  app.post('/api/contact', async (req, res) => {
+  try {
+    const response = await fetch(process.env.CONTACT_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false });
+  }
+});
 }
 catch(ex){
   console.log(ex.message);
