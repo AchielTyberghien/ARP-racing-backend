@@ -62,7 +62,8 @@ try{
       throw new Error('Failed to send contact message');
     }
     res.json({ success: true });
-  } catch (err) {
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false });
   }
 });
