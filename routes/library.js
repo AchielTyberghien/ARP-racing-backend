@@ -37,6 +37,10 @@ router.get("/", async (req, res) => {
         if (!mapsWithFirstImage[topLevelName]) {
             mapsWithFirstImage[topLevelName] = file.name;
         }
+
+        if (file.customMetadata?.Thumbnail === "true" || file.customMetadata?.Thumbnail === true) {
+          mapsWithFirstImage[topLevelName] = file.name;
+        }
     });
 
 
