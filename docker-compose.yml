@@ -7,6 +7,7 @@ services:
     command:
       - '--providers.docker=true'
       - '--providers.docker.exposedbydefault=false'
+      - '--providers.providersThrottleDuration=2s'
       - '--entrypoints.web.address=:80'
       - '--api.dashboard=true'
     ports:
